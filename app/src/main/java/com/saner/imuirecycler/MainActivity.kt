@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
         loadMoreBar.visibility=View.VISIBLE
         Handler().postDelayed({
             val datas = ArrayList<IMessage>()
-            for (i in 1..10) {
+            for (i in 1..30) {
                 datas.add(getMessage(i, MessageDirection.Out, MessageType.text, "加载更多"))
             }
             mAdapter.addMoreMessage(datas)
@@ -144,10 +144,15 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
         IMConfig.loadImage(imageView, url)
     }
 
+
+
     private fun toast(string: String) {
         Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * 隐藏软键盘
+     */
     private fun hideInput() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(but_send.windowToken, 0)

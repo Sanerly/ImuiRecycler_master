@@ -20,8 +20,7 @@ class IMRecyclerView : RecyclerView {
 
 
     fun <T : IMessage> setAdapter(adapter: BaseIMRecyclerAdapter<T>) {
-        var manager = LinearLayoutManager(context)
-//        manager.stackFromEnd=true
+        val manager = LinearLayoutManager(context)
         manager.reverseLayout=true
         layoutManager = manager
 
@@ -33,7 +32,6 @@ class IMRecyclerView : RecyclerView {
         adapter.setContext(context)
         addOnScrollListener(ScrollMoreListener(manager,adapter))
         super.setAdapter(adapter)
-//        toPosition(adapter.itemCount - 1)
     }
 
      fun toPosition(index:Int){
