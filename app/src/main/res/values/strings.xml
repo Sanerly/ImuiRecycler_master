@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ImuiRecycler_master</string>
+
+    <string name="message">返回这个类中定义的其他类，包括内部类(inner class声明的)和嵌套类(class声明的)返回这个类中定义的其他类，包括内部类(inner class声明的)和嵌套类(class声明的)</string>
+</resources>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+    <saner.com.imlist.widget.CustomImageView
+        android:id="@+id/im_base_left_avatar"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginRight="5dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/im_base_left_avatar"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/im_base_right_avatar"
+        android:layout_toRightOf="@+id/im_base_left_avatar">
+
+        <LinearLayout
+            android:id="@+id/im_base_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ProgressBar
+                android:id="@+id/im_base_load"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                android:indeterminateDrawable="@drawable/im_progressbar_small"/>
+
+            <ImageView
+                android:id="@+id/im_base_send_failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:visibility="gone"
+                android:src="@mipmap/im_message_send_failed"/>
+
+            <FrameLayout
+                android:id="@+id/im_base_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@android:color/transparent">
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+
+    <saner.com.imlist.widget.CustomImageView
+        android:id="@+id/im_base_right_avatar"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="5dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"/>
+</RelativeLayout>

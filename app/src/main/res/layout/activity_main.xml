@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_bg"
+    tools:context="com.saner.imuirecycler.MainActivity">
+
+    <ProgressBar
+        android:id="@+id/loadMoreBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:layout_margin="5dp"/>
+
+    <saner.com.imlist.widget.IMRecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/import_layout"
+        android:layout_alignParentTop="true"/>
+
+    <RelativeLayout
+        android:id="@+id/import_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <EditText
+            android:id="@+id/edit_import"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@+id/but_send"
+            android:background="@drawable/im_message_import"
+            android:padding="7dp"
+            android:textSize="13sp"/>
+
+        <Button
+            android:id="@+id/but_send"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/im_message_send"
+            android:text="发送"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+</RelativeLayout>
