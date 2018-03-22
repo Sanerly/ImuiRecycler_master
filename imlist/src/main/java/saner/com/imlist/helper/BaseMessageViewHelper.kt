@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import saner.com.imlist.R
-import saner.com.imlist.adapter.BaseIMRecyclerAdapter
+import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.holder.MessageViewHolder
 import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.MessageDirection
@@ -19,7 +19,7 @@ import saner.com.imlist.widget.CustomImageView
 /**
  * Created by sunset on 2018/3/12.
  */
-abstract class BaseMessageViewHelper(adapter: BaseIMRecyclerAdapter<IMessage>) : MessageViewHelper<BaseIMRecyclerAdapter<IMessage>, MessageViewHolder, IMessage>(adapter) {
+abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : MessageViewHelper<BaseRecyclerAdapter<IMessage>, MessageViewHolder, IMessage>(adapter) {
 
     lateinit var mView: View
     lateinit var mData: IMessage

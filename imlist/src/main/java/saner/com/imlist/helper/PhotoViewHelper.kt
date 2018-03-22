@@ -1,7 +1,7 @@
 package saner.com.imlist.helper
 
 import saner.com.imlist.R
-import saner.com.imlist.adapter.BaseIMRecyclerAdapter
+import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.model.IMessage
 import saner.com.imlist.widget.CustomImageView
 
@@ -9,7 +9,7 @@ import saner.com.imlist.widget.CustomImageView
  * Created by sunset on 2018/3/14.
  */
 
-class PhotoViewHelper(adapter: BaseIMRecyclerAdapter<IMessage>) : BaseMessageViewHelper(adapter) {
+class PhotoViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : BaseMessageViewHelper(adapter) {
 
 
     private val url = "http://h.hiphotos.baidu.com/zhidao/pic/item/43a7d933c895d1438a696fa475f082025aaf071d.jpg"

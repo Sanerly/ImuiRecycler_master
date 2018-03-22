@@ -2,14 +2,14 @@ package saner.com.imlist.helper
 
 import android.widget.TextView
 import saner.com.imlist.R
-import saner.com.imlist.adapter.BaseIMRecyclerAdapter
+import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.model.IMessage
 
 /**
  * Created by sunset on 2018/3/13.
  */
 
-class TextViewHelper(adapter: BaseIMRecyclerAdapter<IMessage>) : BaseMessageViewHelper(adapter) {
+class TextViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : BaseMessageViewHelper(adapter) {
 
     lateinit var text: TextView
 

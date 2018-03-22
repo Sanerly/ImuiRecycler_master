@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView
 import saner.com.imlist.holder.MessageViewHolder
 
 /**
- * Comparable 同 java extends
+ *Helper基类
  */
 abstract class MessageViewHelper<out ADAPTER : RecyclerView.Adapter<MessageViewHolder>, in HOLDER : MessageViewHolder, in DATA>(adapter: ADAPTER){
 
@@ -14,6 +14,6 @@ abstract class MessageViewHelper<out ADAPTER : RecyclerView.Adapter<MessageViewH
         return mAdapter
     }
 
-
+    //传递Adapter中的数据到Helper中
     abstract fun convert(holder: HOLDER, data: DATA, position: Int)
 }

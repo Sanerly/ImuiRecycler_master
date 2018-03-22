@@ -19,20 +19,20 @@ import java.lang.Exception
 import java.util.*
 
 
-abstract class BaseIMRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : RecyclerView.Adapter<MessageViewHolder>(), OnLoadMoreListener {
+abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : RecyclerView.Adapter<MessageViewHolder>(), OnLoadMoreListener {
 
     /**
-     * viewType->layoutResId
+     * viewType->布局
      */
     private var layouts: SparseArray<Int>? = null
 
     /**
-     * viewType->view holder class
+     * viewType->helper类
      */
     private var helperClasses: SparseArray<Class<out BaseMessageViewHelper>>? = null
 
     /**
-     * viewType->view holder instance
+     * viewType->实例化helper
      */
     private var typeViewHelper: MutableMap<Int, HashMap<String, BaseMessageViewHelper>>? = null
 
@@ -103,10 +103,12 @@ abstract class BaseIMRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Rec
         if (helper != null) {
             helper.convert(holder, mDatas[position], position)
         }
-
     }
 
 
+    /**
+     * 这里获取layouts中存储的布局资源，生成View，放入MessageViewHolder中
+     */
     private fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
 
         return MessageViewHolder(getItemView(layouts!![viewType], parent))

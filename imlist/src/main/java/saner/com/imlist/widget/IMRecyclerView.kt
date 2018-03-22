@@ -5,7 +5,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
-import saner.com.imlist.adapter.BaseIMRecyclerAdapter
+import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.interfaces.ScrollMoreListener
 
@@ -19,7 +19,7 @@ class IMRecyclerView : RecyclerView {
     constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
 
-    fun <T : IMessage> setAdapter(adapter: BaseIMRecyclerAdapter<T>) {
+    fun <T : IMessage> setAdapter(adapter: BaseRecyclerAdapter<T>) {
         val manager = LinearLayoutManager(context)
         manager.reverseLayout=true
         layoutManager = manager

@@ -24,6 +24,9 @@ class ViewHelperFactory {
         }
 
 
+        /**
+         * 获取所有继承自BaseMessageViewHelper的子类
+         */
         fun getAllViewHolders(): List<Class<out BaseMessageViewHelper>> {
             val list = ArrayList<Class<out BaseMessageViewHelper>>()
             list.add(TextViewHelper::class.java)
@@ -34,9 +37,10 @@ class ViewHelperFactory {
             return list
         }
 
-
+        /**
+         * 不同的消息类型返回不同的Helper
+         */
         fun getViewHolderByType(message: IMessage): Class<out BaseMessageViewHelper> {
-
             when {
                 message.getMsgType() == MessageType.text -> return TextViewHelper::class.java
                 else -> {
