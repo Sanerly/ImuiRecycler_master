@@ -1,12 +1,10 @@
 package com.saner.imuirecycler
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
 import com.saner.imuirecycler.list.IMRecyclerAdapter
@@ -16,13 +14,12 @@ import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.MessageDirection
 import saner.com.imlist.model.MessageType
 import com.saner.imuirecycler.model.MyMessage
-import junit.framework.Assert
 import saner.com.imlist.helper.PhotoViewHelper
 import saner.com.imlist.holder.ViewHelperFactory
 import saner.com.imlist.model.interfaces.IMListEventListener
 import saner.com.imlist.model.interfaces.Imageloader
-import saner.com.imlist.model.interfaces.KeyBoardObserver
-import saner.com.imlist.model.interfaces.KeyBoardObserver.KeyBoardListener
+import com.iminput.listener.KeyBoardObserver
+import com.iminput.listener.KeyBoardObserver.KeyBoardListener
 
 class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener, Imageloader {
 
@@ -71,12 +68,12 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
     }
 
     private fun initSendMessage() {
-
-        but_send.setOnClickListener {
-            val content = edit_import.text.toString()
-            mAdapter.addNewMessage(getMessage(mDatas.size, MessageDirection.Out, MessageType.text, content))
-            edit_import.setText("")
-        }
+//
+//        but_send.setOnClickListener {
+//            val content = edit_import.text.toString()
+//            mAdapter.addNewMessage(getMessage(mDatas.size, MessageDirection.Out, MessageType.text, content))
+//            edit_import.setText("")
+//        }
     }
 
     private fun getMessage(i: Int, direction: MessageDirection, messageType: MessageType, content: String): IMessage {
@@ -154,9 +151,9 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
      * 隐藏软键盘
      */
     private fun hideInput() {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(but_send.windowToken, 0)
-        but_send.clearFocus()
+//        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.hideSoftInputFromWindow(but_send.windowToken, 0)
+//        but_send.clearFocus()
     }
 
     override fun onDestroy() {

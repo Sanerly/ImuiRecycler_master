@@ -12,18 +12,22 @@ interface IMListEventListener {
      * 点击好友头像通知
      */
     fun onRightAvatar(message: IMessage)
+
     /**
      * 点击自己头像通知
      */
     fun onLeftAvatar(message: IMessage)
+
     /**
      * 列表Item点击通知
      */
     fun onItemClick(message: IMessage)
+
     /**
      * 列表Item长按通知
      */
     fun onItemLongClick(message: IMessage)
+
     /**
      * 下拉加载更多
      */

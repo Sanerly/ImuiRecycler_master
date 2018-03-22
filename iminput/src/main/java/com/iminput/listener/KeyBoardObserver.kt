@@ -1,4 +1,4 @@
-package saner.com.imlist.model.interfaces
+package com.iminput.listener
 
 import android.app.Activity
 import android.os.Build
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 
 
-class KeyBoardObserver(contextObj: Activity?) : ViewTreeObserver.OnGlobalLayoutListener {
+ class KeyBoardObserver(contextObj: Activity?) : ViewTreeObserver.OnGlobalLayoutListener {
     private val TAG = this.javaClass.simpleName
 
     private val mContentView: View?
