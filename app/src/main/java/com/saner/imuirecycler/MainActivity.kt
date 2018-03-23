@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
         recycler_view.setAdapter(mAdapter)
         mAdapter.setHelperEvent(this)
         mAdapter.setImageLoader(this)
+
     }
 
     private fun initSendMessage() {

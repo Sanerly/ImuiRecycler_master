@@ -1,34 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/default_bg"
+    android:orientation="vertical"
     tools:context="com.saner.imuirecycler.MainActivity">
 
-    <ProgressBar
-        android:id="@+id/loadMoreBar"
-        style="?android:attr/progressBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        android:visibility="gone"/>
-
-    <saner.com.imlist.widget.IMRecyclerView
-        android:id="@+id/recycler_view"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/import_layout"
-        android:layout_alignParentTop="true"/>
+        android:layout_height="46dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="Saner"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
 
-    <com.iminput.ChatInputLayout
-        android:id="@+id/import_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/loadMoreBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:visibility="gone"/>
+
+        <saner.com.imlist.widget.IMRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/import_layout"
+            android:layout_alignParentTop="true"/>
+
+        <com.iminput.ChatInputLayout
+            android:id="@+id/import_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+
     <!--<RelativeLayout-->
     <!--android:id="@+id/import_layout"-->
     <!--android:layout_width="match_parent"-->
@@ -60,4 +77,4 @@
     <!--android:textColor="@color/white"-->
     <!--android:textSize="14sp"/>-->
     <!--</RelativeLayout>-->
-</RelativeLayout>
+</LinearLayout>

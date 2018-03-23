@@ -1,45 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:orientation="vertical">
+              android:orientation="vertical"
+              tools:ignore="HardcodedText,RtlHardcoded">
 
-    <RelativeLayout
-        android:id="@+id/import_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/input_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_cheat_voice"/>
 
         <EditText
-            android:id="@+id/edit_import"
-            android:layout_width="match_parent"
+            android:id="@+id/input_edit_message"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
             android:layout_margin="5dp"
-            android:layout_toLeftOf="@+id/but_send"
+            android:layout_weight="1"
             android:background="@drawable/im_message_import"
             android:padding="7dp"
+            android:imeOptions="actionSend"
+            android:singleLine="true"
             android:textSize="13sp"/>
 
-        <Button
-            android:id="@+id/but_send"
+        <ImageView
+            android:id="@+id/input_send"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:background="@drawable/im_message_send"
-            android:text="发送"
-            android:textColor="@color/white"
-            android:textSize="14sp"/>
-    </RelativeLayout>
+            android:src="@drawable/ic_cheat_emo"/>
+
+        <ImageView
+            android:id="@+id/input_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_cheat_add"/>
+    </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/input_more_layout"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:background="@color/default_bg">
+        android:layout_height="100dp"
+        android:background="@color/default_bg"
+        android:visibility="gone">
 
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_cheat_add"/>
     </RelativeLayout>
 </LinearLayout>

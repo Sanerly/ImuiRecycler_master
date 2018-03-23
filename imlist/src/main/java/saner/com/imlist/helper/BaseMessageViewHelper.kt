@@ -178,14 +178,14 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
      * 当是接收到的消息时，内容区域背景的drawable id
      */
     open protected fun leftBackground(): Int {
-        return R.mipmap.im_message_left_white_bg
+        return R.drawable.im_message_left_white_bg
     }
 
     /**
      * 当是发送出去的消息时，内容区域背景的drawable id
      */
     open protected fun rightBackground(): Int {
-        return R.mipmap.im_message_right_blue_bg
+        return R.drawable.im_message_right_blue_bg
     }
 
     /**

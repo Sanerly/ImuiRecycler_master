@@ -12,7 +12,7 @@
         android:layout_height="46dp"
         android:layout_marginRight="5dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@drawable/ic_launcher"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:visibility="gone"
-                android:src="@mipmap/im_message_send_failed"/>
+                android:src="@drawable/im_message_send_failed"/>
 
             <FrameLayout
                 android:id="@+id/im_base_content"
@@ -64,5 +64,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="5dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/ic_launcher"/>
+        android:src="@drawable/ic_launcher"/>
 </RelativeLayout>
