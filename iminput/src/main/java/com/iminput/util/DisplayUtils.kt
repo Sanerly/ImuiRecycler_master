@@ -1,5 +1,6 @@
 package com.iminput.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
@@ -52,14 +53,15 @@ object DisplayUtils {
      * @return 状态栏高度
      */
     val statusBarHeight: Int
+        @SuppressLint("PrivateApi")
         get() {
             val defaultHeightInDp = 19
             var height = DisplayUtils.dp2px(defaultHeightInDp)
             try {
                 val c = Class.forName("com.android.internal.R\$dimen")
                 val obj = c.newInstance()
-                val field = c.getField("status_bar_height")
-                height = sResources!!.getDimensionPixelSize(Integer.parseInt(field.get(obj).toString()))
+                val fields = c.getField("status_bar_height")
+                height = sResources!!.getDimensionPixelSize(Integer.parseInt(fields.get(obj).toString()))
             } catch (e: Exception) {
                 e.printStackTrace()
             }

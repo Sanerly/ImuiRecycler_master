@@ -13,7 +13,8 @@ import android.annotation.SuppressLint
  */
 object InputMethodUtils {
 
-    var isKeyboardShowing: Boolean = false
+
+    private const val KEYBOARD: String = "key_board_height"
 
     private var sKeyBoardHeight = DisplayUtils.defaultKeyboardHeight
 
@@ -73,7 +74,6 @@ object InputMethodUtils {
         }
     }
 
-    private const val KEYBOARD: String = "key_board_height"
 
     @SuppressLint("ApplySharedPref")
     fun setKeyboardHeight(height: Int, cot: Context) {

@@ -28,7 +28,7 @@ class ChatInputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener
     private var mShowHeight: Int = 0
     private var mHideHeight: Int = 0
     private var mLayoutBottom: Int = 0
-    private var mKeyBoardHeight: Int = 835
+    private var mKeyBoardHeight: Int = 0
 
     private lateinit var inputMore: ImageView
     private lateinit var inputMoreContainer: RelativeLayout
@@ -43,7 +43,6 @@ class ChatInputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
         View.inflate(context, R.layout.chat_input_layout, this)
         DisplayUtils.init(context)
-//        InputMethodUtils.detectKeyboard(context as Activity)
         initView()
     }
 
@@ -54,23 +53,16 @@ class ChatInputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener
         inputEditMessage = this.findViewById(R.id.input_edit_message)
 
         inputMore.setOnClickListener(this)
-
-
-
         inputEditMessage.setOnTouchListener(this)
 
-        inputEditMessage.setOnKeyListener { _, keyCode, _ ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER) {
-                LogUtil.logd("发送消息")
-            }
-            false
-        }
+
+        val height = InputMethodUtils.getKeyboardHeight(context)
+        onUpdateContainerHeight(height)
 
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (event!!.action == MotionEvent.ACTION_UP) {
-            InputMethodUtils.isKeyboardShowing = true
             if (isContainerShowing()) {
                 inputMoreContainer.postDelayed(mHideEmotionPanelTask, sleep)
             }
@@ -125,14 +117,13 @@ class ChatInputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener
      */
     private fun onUpdateContainerHeight(keyboardHeight: Int) {
         val params = inputMoreContainer.layoutParams
-        if (params != null && params!!.height != keyboardHeight) {
-            params!!.height = keyboardHeight
+        if (params != null && params.height != keyboardHeight) {
+            params.height = keyboardHeight
             inputMoreContainer.layoutParams = params
         }
     }
 
     private val mHideEmotionPanelTask = Runnable { hideContainer() }
-
 
 
     /**
@@ -148,12 +139,13 @@ class ChatInputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener
             isShow = true
         }
         if (mShowHeight > 0 && mLayoutBottom > 0) {
-            val h=mHideHeight - mShowHeight
-            if (h>0 && !isHas){
-                mKeyBoardHeight=h
-                 LogUtil.logd("高度 = $isShow     -----  $mKeyBoardHeight")
+            val h = mHideHeight - mShowHeight
+            if (h > 0 && !isHas) {
+                mKeyBoardHeight = h
+                LogUtil.logd("高度 = $isShow     -----  $mKeyBoardHeight")
+                InputMethodUtils.setKeyboardHeight(mKeyBoardHeight, context)
                 onUpdateContainerHeight(mKeyBoardHeight)
-                isHas=true
+                isHas = true
             }
         }
         mLayoutBottom = b
