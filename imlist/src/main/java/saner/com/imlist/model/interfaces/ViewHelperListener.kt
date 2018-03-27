@@ -7,7 +7,7 @@ import saner.com.imlist.model.IMessage
  * Created by sunset on 2018/3/14.
  */
 
-interface IMListEventListener {
+interface ViewHelperListener {
     /**
      * 点击好友头像通知
      */

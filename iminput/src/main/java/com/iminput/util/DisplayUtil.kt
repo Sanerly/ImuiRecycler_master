@@ -7,13 +7,11 @@ import android.util.DisplayMetrics
 
 import com.iminput.R
 
-import java.lang.reflect.Field
-
 /**
  * @author xh2009cn
  */
-object DisplayUtils {
-    private val ROUND_CEIL = 0.5f
+object DisplayUtil {
+    private const val ROUND_CEIL = 0.5f
     private var sDisplayMetrics: DisplayMetrics? = null
     private var sResources: Resources? = null
     /**
@@ -56,7 +54,7 @@ object DisplayUtils {
         @SuppressLint("PrivateApi")
         get() {
             val defaultHeightInDp = 19
-            var height = DisplayUtils.dp2px(defaultHeightInDp)
+            var height = DisplayUtil.dp2px(defaultHeightInDp)
             try {
                 val c = Class.forName("com.android.internal.R\$dimen")
                 val obj = c.newInstance()
@@ -77,7 +75,7 @@ object DisplayUtils {
     fun init(context: Context) {
         sDisplayMetrics = context.resources.displayMetrics
         sResources = context.resources
-        defaultKeyboardHeight = context.resources.getDimensionPixelSize(R.dimen.default_keyboard_height)
+        defaultKeyboardHeight = sResources!!.getDimensionPixelSize(R.dimen.default_keyboard_height)
     }
 
     /**

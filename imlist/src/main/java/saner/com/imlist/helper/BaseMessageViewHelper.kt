@@ -13,7 +13,7 @@ import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.holder.MessageViewHolder
 import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.MessageDirection
-import saner.com.imlist.model.interfaces.IMListEventListener
+import saner.com.imlist.model.interfaces.ViewHelperListener
 import saner.com.imlist.widget.CustomImageView
 
 /**
@@ -92,7 +92,7 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
      * 设置列表的点击事件
      */
     private fun setOnClick() {
-        val helperListener: IMListEventListener = getAdapter().getHelperEvent() ?: return
+        val helperListener: ViewHelperListener = getAdapter().getHelperEvent() ?: return
         mLayoutContent.setOnClickListener {
             helperListener.onItemClick(mData)
         }

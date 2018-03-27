@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import com.iminput.listener.InputListener
 import com.saner.imuirecycler.list.IMRecyclerAdapter
 import com.saner.imuirecycler.util.IMConfig
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,38 +17,32 @@ import saner.com.imlist.model.MessageType
 import com.saner.imuirecycler.model.MyMessage
 import saner.com.imlist.helper.PhotoViewHelper
 import saner.com.imlist.holder.ViewHelperFactory
-import saner.com.imlist.model.interfaces.IMListEventListener
+import saner.com.imlist.model.interfaces.ViewHelperListener
 import saner.com.imlist.model.interfaces.Imageloader
-import com.iminput.listener.KeyBoardObserver
-import com.iminput.listener.KeyBoardObserver.KeyBoardListener
 
-class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener, Imageloader {
+class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Imageloader {
+
 
 
     private lateinit var mDatas: ArrayList<IMessage>
     private lateinit var mAdapter: IMRecyclerAdapter
-    private lateinit var mKeyboard: KeyBoardObserver
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initView()
         initData()
-        initSendMessage()
-        initKeyBoard()
     }
 
-    private fun initKeyBoard() {
-        mKeyboard = KeyBoardObserver(this)
-        mKeyboard.setKeyBoardListener(this)
+    private fun initView() {
+        input_layout.setInputListener(this)
     }
 
-    override fun onKeyboardChange(isShow: Boolean, keyboardHeight: Int) {
-        if (isShow) {
-            recycler_view.toPosition(0)
-        }
-//        toast("软键盘的高度--------" + keyboardHeight)
-    }
+
+
+
+
 
     private fun initData() {
         mDatas = ArrayList()
@@ -68,14 +63,7 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
 
     }
 
-    private fun initSendMessage() {
-//
-//        but_send.setOnClickListener {
-//            val content = edit_import.text.toString()
-//            mAdapter.addNewMessage(getMessage(mDatas.size, MessageDirection.Out, MessageType.text, content))
-//            edit_import.setText("")
-//        }
-    }
+
 
     private fun getMessage(i: Int, direction: MessageDirection, messageType: MessageType, content: String): IMessage {
         val message = MyMessage()
@@ -149,16 +137,15 @@ class MainActivity : AppCompatActivity(), IMListEventListener, KeyBoardListener,
     }
 
     /**
-     * 隐藏软键盘
+     * 隐藏底部布局
      */
     private fun hideInput() {
-//        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        imm.hideSoftInputFromWindow(but_send.windowToken, 0)
-//        but_send.clearFocus()
+        input_layout.hideInputLayout()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mKeyboard.destroy()
+    override fun onSoftKeyboardStatus(status: Boolean) {
+        if (status) {
+            recycler_view.toPosition(0)
+        }
     }
 }

@@ -27,37 +27,82 @@
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:background="@drawable/im_message_import"
+            android:maxLines="3"
             android:padding="7dp"
-            android:imeOptions="actionSend"
-            android:singleLine="true"
             android:textSize="13sp"/>
 
         <ImageView
-            android:id="@+id/input_send"
+            android:id="@+id/input_emoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:src="@drawable/ic_cheat_emo"/>
 
-        <ImageView
-            android:id="@+id/input_more"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/ic_cheat_add"/>
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/input_send"
+                android:layout_width="40dp"
+                android:layout_height="27dp"
+                android:padding="5dp"
+                android:paddingRight="7dp"
+                android:paddingLeft="7dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:background="@drawable/im_message_send"
+                android:text="发送"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/input_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_cheat_add"
+                android:visibility="invisible"/>
+        </FrameLayout>
+
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/input_more_layout"
+    <FrameLayout
+        android:id="@+id/input_container"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
         android:background="@color/default_bg"
         android:visibility="gone">
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_cheat_add"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/input_container_more"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:text="更多"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/input_container_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:text="表情"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+
 </LinearLayout>

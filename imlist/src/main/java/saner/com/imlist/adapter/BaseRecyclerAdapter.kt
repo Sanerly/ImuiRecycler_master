@@ -12,7 +12,7 @@ import saner.com.imlist.helper.BaseMessageViewHelper
 import saner.com.imlist.holder.MessageViewHolder
 import saner.com.imlist.holder.ViewHelperFactory
 import saner.com.imlist.model.IMessage
-import saner.com.imlist.model.interfaces.IMListEventListener
+import saner.com.imlist.model.interfaces.ViewHelperListener
 import saner.com.imlist.model.interfaces.Imageloader
 import saner.com.imlist.model.interfaces.ScrollMoreListener.OnLoadMoreListener
 import java.lang.Exception
@@ -39,7 +39,7 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
     /**
      * 接口设置可为空
      */
-    private var helperListener: IMListEventListener? = null
+    private var helperListener: ViewHelperListener? = null
     /**
      * 提供外部加载图片使用，可以使用任何加载图片框架
      */
@@ -161,7 +161,7 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
     }
 
     /**
-     * 添加多条Message
+     * 添加多条Message,显示加载的第一条消息
      */
     fun addMoreMessage(data:List<T>) {
        val oldSize: Int=mDatas.size
@@ -183,16 +183,16 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
     /**
      * 设置Helper里的点击通知
      */
-    fun setHelperEvent(helperListener: IMListEventListener) {
+    fun setHelperEvent(helperListener: ViewHelperListener) {
         this.helperListener = helperListener
     }
 
     /**
      * 获取事件
      */
-    fun getHelperEvent(): IMListEventListener? {
+    fun getHelperEvent(): ViewHelperListener? {
         if (helperListener != null) {
-            return helperListener as IMListEventListener
+            return helperListener as ViewHelperListener
         }
         return null
     }
