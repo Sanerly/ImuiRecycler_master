@@ -8,4 +8,9 @@ interface InputListener {
      * 监听软键盘弹出/关闭接口
      */
     fun onSoftKeyboardStatus(status: Boolean)
+
+    /**
+     * 发送监听
+     */
+    fun onSend()
 }

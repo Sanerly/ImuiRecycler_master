@@ -55,7 +55,7 @@
                 android:text="发送"
                 android:textColor="@color/white"
                 android:textSize="12sp"
-                android:visibility="visible"/>
+                android:visibility="invisible"/>
 
             <ImageView
                 android:id="@+id/input_more"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:src="@drawable/ic_cheat_add"
-                android:visibility="invisible"/>
+                android:visibility="visible"/>
         </FrameLayout>
 
     </LinearLayout>

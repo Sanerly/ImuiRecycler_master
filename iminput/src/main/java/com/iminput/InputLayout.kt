@@ -1,7 +1,10 @@
 package com.iminput
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -10,12 +13,13 @@ import android.widget.*
 import com.iminput.listener.InputListener
 import com.iminput.util.DisplayUtil
 import com.iminput.util.InputUtil
+import com.iminput.util.LogUtil
 
 
 /**
  * Created by sunset on 2018/3/22.
  */
-class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
+class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher {
 
 
     private var isShow: Boolean = false
@@ -31,13 +35,13 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
     private lateinit var inputContainer: FrameLayout
     private lateinit var inputMoreLayout: RelativeLayout
     private lateinit var inputEmojiLayout: RelativeLayout
-    private lateinit var inputSend:Button
+    private lateinit var inputSend: Button
 
 
     private lateinit var inputEditMessage: EditText
     private var sleep: Long = 500
 
-    private lateinit var mInputListener:InputListener
+    private lateinit var mInputListener: InputListener
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -58,12 +62,13 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
         inputContainer = this.findViewById(R.id.input_container)
         inputMoreLayout = this.findViewById(R.id.input_container_more)
         inputEmojiLayout = this.findViewById(R.id.input_container_emoji)
-        inputSend=this.findViewById(R.id.input_send)
+        inputSend = this.findViewById(R.id.input_send)
 
+        inputSend.setOnClickListener(this)
         inputMore.setOnClickListener(this)
         inputEmoji.setOnClickListener(this)
         inputEditMessage.setOnTouchListener(this)
-
+        inputEditMessage.addTextChangedListener(this)
         //获取缓存中的软键盘高度
         val height = InputUtil.getKeyboardHeight(context)
         setContainerHeight(height)
@@ -79,36 +84,33 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
         return false
     }
 
-    override fun onClick(v: View?) {
-        when (v!!.id) {
-            R.id.input_more -> {
-                if (isContainerShowing() && isMoreShowing()) {
-                    switchKeyboard()
-                } else {
-                    showContainer()
-                    setContainerLayout(false)
-                }
+    override fun onClick(v: View) {
+        when {
+            v.id == R.id.input_more -> if (isContainerShowing() && isMoreShowing()) {
+                switchKeyboard()
+            } else {
+                showContainer()
+                setContainerLayout(false)
             }
-            R.id.input_emoji -> {
-
-                if (isContainerShowing() &&  isEmojiShowing()) {
-                    switchKeyboard()
-                } else {
-                    showContainer()
-                    setContainerLayout(true)
-                }
-
+            v.id == R.id.input_emoji -> if (isContainerShowing() && isEmojiShowing()) {
+                switchKeyboard()
+            } else {
+                showContainer()
+                setContainerLayout(true)
             }
+            v.id == R.id.input_send ->{
+                mInputListener.onSend()
+                inputEditMessage.setText("")
+            }
+
         }
     }
-
-
 
 
     /**
      * 切换软键盘可见和隐藏
      */
-    private  fun switchKeyboard() {
+    private fun switchKeyboard() {
         InputUtil.toggleSoftInput(inputEditMessage)
         inputContainer.postDelayed(mHideContainerRunnable, sleep)
     }
@@ -124,28 +126,28 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
     }
 
     /**
-     * 判断更多是否正在可见状态
+     * 判断更多容器是否正在可见状态
      */
     private fun isMoreShowing(): Boolean {
         return inputMoreLayout.visibility == View.VISIBLE
     }
 
     /**
-     * 判断表情是否正在可见状态
+     * 判断表情容器是否正在可见状态
      */
     private fun isEmojiShowing(): Boolean {
         return inputEmojiLayout.visibility == View.VISIBLE
     }
 
     /**
-     * 判断容器是否可见
+     * 判断一级容器是否可见
      */
     private fun isContainerShowing(): Boolean {
         return inputContainer.visibility == View.VISIBLE
     }
 
     /**
-     * 显示容器
+     * 显示一级容器
      */
     private fun showContainer() {
         inputContainer.removeCallbacks(mHideContainerRunnable)
@@ -155,7 +157,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
     }
 
     /**
-     * 隐藏容器
+     * 隐藏一级容器
      */
     private fun hideContainer() {
         if (isContainerShowing()) {
@@ -165,7 +167,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
     }
 
     /**
-     * 设置容器高度
+     * 设置一级容器高度
      */
     private fun setContainerHeight(keyboardHeight: Int) {
         val params = inputContainer.layoutParams
@@ -181,6 +183,10 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
 
     /**
      * 计算软键盘的高度
+     *
+     * 计算的原理是当软键盘弹起时会将上面的布局顶上去，这样我们拿到被顶上去的布局布局底部到屏幕底部，
+     * 之间的距离就是软键盘的距离，第一次我们默认一个大概的高度，当然键盘弹起过一次，就将值保存起来，
+     * 留给下次使用。
      */
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
@@ -208,7 +214,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
     /**
      *关闭软键盘和容器布局
      */
-     fun hideInputLayout(){
+    fun hideInputLayout() {
         InputUtil.hideKeyboard(inputEditMessage)
         inputContainer.postDelayed(mHideContainerRunnable, 0)
     }
@@ -216,10 +222,39 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener {
     /**
      * 设置Input布局监听
      */
-    fun setInputListener(listener: InputListener){
-        this.mInputListener=listener
+    fun setInputListener(listener: InputListener) {
+        this.mInputListener = listener
     }
 
+    /******************************输入框的内容监听**************************************/
+
+    override fun afterTextChanged(s: Editable?) {
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        val length = s!!.length
+        if (length > 0) {
+            isMoreOrSend(true)
+        } else {
+            isMoreOrSend(false)
+        }
+
+    }
+
+    /**
+     * 设置更多按钮和发送按钮交替显示
+     * @param isVisi =true表示发送按钮显示 =false 表示发送按钮隐藏
+     */
+    private fun isMoreOrSend(isVisi: Boolean) {
+        val hide = if (isVisi) inputMore else inputSend
+        val show = if (isVisi) inputSend else inputMore
+        show.visibility = View.VISIBLE
+        hide.visibility = View.INVISIBLE
+    }
 
 }
 

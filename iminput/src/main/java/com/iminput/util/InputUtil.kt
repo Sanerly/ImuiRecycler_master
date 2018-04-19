@@ -18,7 +18,6 @@ object InputUtil {
 
     private var sKeyBoardHeight = DisplayUtil.defaultKeyboardHeight
 
-
     /**
      * 隐藏输入法
      */

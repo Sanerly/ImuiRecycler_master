@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.iminput.listener.InputListener
+import com.iminput.util.LogUtil
 import com.saner.imuirecycler.list.IMRecyclerAdapter
 import com.saner.imuirecycler.util.IMConfig
 import kotlinx.android.synthetic.main.activity_main.*
@@ -147,5 +148,11 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         if (status) {
             recycler_view.toPosition(0)
         }
+    }
+
+    override fun onSend() {
+        LogUtil.logd("发送")
+        mAdapter.addNewMessage(getMessage(mDatas.size, MessageDirection.Out, MessageType.text, "添加一条心消息"))
+
     }
 }
