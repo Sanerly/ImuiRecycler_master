@@ -12,7 +12,7 @@ import saner.com.imlist.model.IMessage
 class UnknownViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : BaseMessageViewHelper(adapter) {
     @SuppressLint("SetTextI18n")
     override fun bindContentView() {
-        text.text = "无法显示该‘${mData.getMsgType()}’类型的消息"
+        text.text = "无法显示该‘${mMessage.getMsgType()}’类型的消息"
     }
     private lateinit var text:TextView
     override fun inflateContentView() {

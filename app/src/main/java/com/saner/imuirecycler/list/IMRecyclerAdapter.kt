@@ -1,19 +1,16 @@
 package com.saner.imuirecycler.list
 
-import saner.com.imlist.model.IMessage
 import saner.com.imlist.adapter.BaseRecyclerAdapter
+import saner.com.imlist.model.IMessage
 
 /**
  * Created by sunset on 2018/3/13.
  */
 
-class IMRecyclerAdapter(datas: ArrayList<IMessage>) : BaseRecyclerAdapter<IMessage>(datas) {
-
-
-
-    private val mMessages = datas
+class IMRecyclerAdapter(messages: ArrayList<IMessage>) : BaseRecyclerAdapter<IMessage>(messages) {
 
     init {
+
 
     }
 

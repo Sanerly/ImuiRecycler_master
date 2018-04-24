@@ -11,15 +11,15 @@ import saner.com.imlist.R
 import saner.com.imlist.helper.BaseMessageViewHelper
 import saner.com.imlist.holder.MessageViewHolder
 import saner.com.imlist.holder.ViewHelperFactory
+import saner.com.imlist.interfaces.Imageloader
+import saner.com.imlist.interfaces.ScrollMoreListener.OnLoadMoreListener
+import saner.com.imlist.interfaces.ViewHelperListener
 import saner.com.imlist.model.IMessage
-import saner.com.imlist.model.interfaces.ViewHelperListener
-import saner.com.imlist.model.interfaces.Imageloader
-import saner.com.imlist.model.interfaces.ScrollMoreListener.OnLoadMoreListener
 import java.lang.Exception
 import java.util.*
 
 
-abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : RecyclerView.Adapter<MessageViewHolder>(), OnLoadMoreListener {
+abstract class BaseRecyclerAdapter<in T: IMessage>(messages: ArrayList<T>) : RecyclerView.Adapter<MessageViewHolder>(), OnLoadMoreListener {
 
     /**
      * viewType->布局
@@ -36,6 +36,7 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
      */
     private var typeViewHelper: MutableMap<Int, HashMap<String, BaseMessageViewHelper>>? = null
 
+
     /**
      * 接口设置可为空
      */
@@ -51,15 +52,15 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
 
     private lateinit var mLayoutManager: LinearLayoutManager
 
-    private var mDatas:ArrayList<T> = datas
+    private var mMessages: ArrayList<T> = messages
 
 
-    private val helperViewType: MutableMap<Class<out BaseMessageViewHelper>, Int>
+    private var helperViewType: MutableMap<Class<out BaseMessageViewHelper>, Int>
 
     init {
-        //反转集合中的数据
-        mDatas.reverse()
 
+        //反转集合中的数据
+        mMessages.reverse()
         helperViewType = HashMap()
         val list: List<Class<out BaseMessageViewHelper>> = ViewHelperFactory.getAllViewHolders()
         var viewType = 0
@@ -68,16 +69,15 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
             addItemType(viewType, R.layout.im_base_layout, helper)
             helperViewType[helper] = viewType
         }
+
     }
 
-
     override fun getItemViewType(position: Int): Int {
-        return helperViewType[ViewHelperFactory.getViewHolderByType(mDatas[position])]!!
+        return helperViewType[ViewHelperFactory.getViewHolderByType(mMessages[position])]!!
     }
 
     override fun getItemCount(): Int {
-
-        return mDatas.size
+        return mMessages.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MessageViewHolder {
@@ -87,7 +87,7 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
 
     override fun onBindViewHolder(holder: MessageViewHolder?, position: Int) {
         val itemType: Int = holder!!.itemViewType
-        val itemKey: String = getItemKey(mDatas[position])
+        val itemKey: String = getItemKey(mMessages[position])
         var helper: BaseMessageViewHelper? = typeViewHelper?.get(itemType)?.get(itemKey)
         if (helper == null) {
             try {
@@ -95,13 +95,13 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
                 val constructor = cls.declaredConstructors[0]
                 constructor.isAccessible = true
                 helper = constructor.newInstance(this) as BaseMessageViewHelper?
-                typeViewHelper!![itemType]!!.put(itemKey, helper!!)
+                typeViewHelper!![itemType]!![itemKey] = helper!!
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
         if (helper != null) {
-            helper.convert(holder, mDatas[position], position)
+            helper.convert(holder, mMessages[position], position)
         }
     }
 
@@ -133,7 +133,7 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
 
 
         if (typeViewHelper == null) typeViewHelper = HashMap()
-        typeViewHelper!!.put(type, HashMap())
+        typeViewHelper!![type] = HashMap()
     }
 
 
@@ -155,7 +155,7 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
      * 添加一条Message，刷新，滚动到该消息
      */
     fun addNewMessage(data: T) {
-        mDatas.add(0,data)
+        mMessages.add(0, data)
         notifyItemRangeInserted(0, 1)
         mLayoutManager.scrollToPosition(0)
     }
@@ -163,13 +163,12 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
     /**
      * 添加多条Message,显示加载的第一条消息
      */
-    fun addMoreMessage(data:List<T>) {
-       val oldSize: Int=mDatas.size
-        mDatas.addAll(data)
-        notifyItemRangeInserted(oldSize, mDatas.size - oldSize)
+    fun addMoreMessage(data: List<T>) {
+        val oldSize: Int = mMessages.size
+        mMessages.addAll(data)
+        notifyItemRangeInserted(oldSize, mMessages.size - oldSize)
         mLayoutManager.scrollToPosition(oldSize)
     }
-
 
 
     override fun onLoadMore() {
@@ -212,5 +211,11 @@ abstract class BaseRecyclerAdapter<in T : IMessage>(datas: ArrayList<T>) : Recyc
         return this.mImageloader
     }
 
+    /**
+     * 返回一个键
+     */
     protected abstract fun getItemKey(data: T): String
+
 }
+
+

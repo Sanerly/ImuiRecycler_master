@@ -13,16 +13,16 @@ import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.holder.MessageViewHolder
 import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.MessageDirection
-import saner.com.imlist.model.interfaces.ViewHelperListener
+import saner.com.imlist.interfaces.ViewHelperListener
 import saner.com.imlist.widget.CustomImageView
 
 /**
- * Created by sunset on 2018/3/12.
+ * 处理消息的基类
  */
 abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : MessageViewHelper<BaseRecyclerAdapter<IMessage>, MessageViewHolder, IMessage>(adapter) {
 
     lateinit var mView: View
-    lateinit var mData: IMessage
+    lateinit var mMessage: IMessage
     lateinit var mContext: Context
 
 
@@ -39,7 +39,7 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
     override fun convert(holder: MessageViewHolder, data: IMessage, position: Int) {
         mView = holder.getConvertView()
         mContext = mView.context
-        mData = data
+        mMessage = data
         inflate()
         refresh()
     }
@@ -84,7 +84,6 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
 //                }, 2000)
 //            }
 //        }
-
     }
 
 
@@ -94,18 +93,18 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
     private fun setOnClick() {
         val helperListener: ViewHelperListener = getAdapter().getHelperEvent() ?: return
         mLayoutContent.setOnClickListener {
-            helperListener.onItemClick(mData)
+            helperListener.onItemClick(mMessage)
         }
         mLayoutContent.setOnLongClickListener {
-            helperListener.onItemLongClick(mData)
+            helperListener.onItemLongClick(mMessage)
             false
         }
         mLeftAvatar.setOnClickListener {
-            helperListener.onLeftAvatar(mData)
+            helperListener.onLeftAvatar(mMessage)
         }
 
         mRightAvatar.setOnClickListener {
-            helperListener.onRightAvatar(mData)
+            helperListener.onRightAvatar(mMessage)
         }
     }
 
@@ -145,7 +144,7 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
             show.visibility = View.VISIBLE
             show.setBorderRadius(5f)
             show.setStyleTyoe(CustomImageView.CIRCLE_TYPE)
-            getAdapter().getImageLoader().loadImage(show, mData.getUserAvatar())
+            getAdapter().getImageLoader().loadImage(show, mMessage.getUserAvatar())
         }
 
     }
@@ -155,7 +154,7 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
      * 得到消息的方向
      */
     protected fun isMsgDirection(): Boolean {
-        return mData.getMsgDirection() === MessageDirection.In
+        return mMessage.getMsgDirection() === MessageDirection.In
     }
 
 
@@ -177,14 +176,14 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
     /**
      * 当是接收到的消息时，内容区域背景的drawable id
      */
-    open protected fun leftBackground(): Int {
+    protected open fun leftBackground(): Int {
         return R.drawable.im_message_left_white_bg
     }
 
     /**
      * 当是发送出去的消息时，内容区域背景的drawable id
      */
-    open protected fun rightBackground(): Int {
+    protected open fun rightBackground(): Int {
         return R.drawable.im_message_right_blue_bg
     }
 
@@ -213,7 +212,7 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
     /**
      * 设置Message布局显示的方向
      */
-    protected fun setGravity(view: View, gravity: Int) {
+    private fun setGravity(view: View, gravity: Int) {
         val params = view.layoutParams as FrameLayout.LayoutParams
         params.gravity = gravity
     }

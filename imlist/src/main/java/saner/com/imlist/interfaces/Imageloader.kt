@@ -1,4 +1,4 @@
-package saner.com.imlist.model.interfaces
+package saner.com.imlist.interfaces
 
 import android.widget.ImageView
 

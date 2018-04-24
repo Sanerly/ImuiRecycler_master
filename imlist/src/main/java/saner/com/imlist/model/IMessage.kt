@@ -21,7 +21,6 @@ interface IMessage {
      */
     fun getMsgDirection():MessageDirection
 
-
     /**
      * 文本消息
      */

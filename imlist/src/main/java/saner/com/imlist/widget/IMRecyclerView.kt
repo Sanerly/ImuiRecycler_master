@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import saner.com.imlist.adapter.BaseRecyclerAdapter
 import saner.com.imlist.model.IMessage
-import saner.com.imlist.model.interfaces.ScrollMoreListener
+import saner.com.imlist.interfaces.ScrollMoreListener
 
 /**
  * Created by sunset on 2018/3/12.
@@ -30,7 +30,7 @@ class IMRecyclerView : RecyclerView {
 
         adapter.setLayoutManager(manager)
         adapter.setContext(context)
-        addOnScrollListener(ScrollMoreListener(manager,adapter))
+        addOnScrollListener(ScrollMoreListener(manager, adapter))
         super.setAdapter(adapter)
     }
 

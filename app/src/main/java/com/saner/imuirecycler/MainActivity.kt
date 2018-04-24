@@ -18,8 +18,8 @@ import saner.com.imlist.model.MessageType
 import com.saner.imuirecycler.model.MyMessage
 import saner.com.imlist.helper.PhotoViewHelper
 import saner.com.imlist.holder.ViewHelperFactory
-import saner.com.imlist.model.interfaces.ViewHelperListener
-import saner.com.imlist.model.interfaces.Imageloader
+import saner.com.imlist.interfaces.ViewHelperListener
+import saner.com.imlist.interfaces.Imageloader
 
 class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Imageloader {
 

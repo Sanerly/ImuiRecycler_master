@@ -18,9 +18,9 @@ class TextViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : BaseMessageViewHe
     }
 
     override fun bindContentView() {
-//        LogUtil.logd(mData.getMsgText())
+//        LogUtil.logd(mMessage.getMsgText())
         initTextColor()
-        text.text = mData.getMsgText()
+        text.text = mMessage.getMsgText()
     }
 
     private fun initTextColor() {
