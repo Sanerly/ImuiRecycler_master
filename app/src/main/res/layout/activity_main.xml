@@ -38,7 +38,7 @@
             android:layout_above="@+id/input_layout"
             android:layout_alignParentTop="true"/>
 
-        <com.iminput.InputLayout
+        <com.iminput.widget.InputLayout
             android:id="@+id/input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

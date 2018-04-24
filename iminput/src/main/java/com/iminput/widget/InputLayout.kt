@@ -1,6 +1,5 @@
-package com.iminput
+package com.iminput.widget
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.text.Editable
@@ -10,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import com.iminput.R
 import com.iminput.listener.InputListener
 import com.iminput.util.DisplayUtil
 import com.iminput.util.InputUtil
@@ -19,7 +19,8 @@ import com.iminput.util.LogUtil
 /**
  * Created by sunset on 2018/3/22.
  */
-class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher {
+class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher,VoiceButton.onStatusListener {
+
 
 
     private var isShow: Boolean = false
@@ -36,7 +37,8 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     private lateinit var inputMoreLayout: RelativeLayout
     private lateinit var inputEmojiLayout: RelativeLayout
     private lateinit var inputSend: Button
-
+    private lateinit var inputVoice:ImageView
+    private lateinit var inputPressSpeak:VoiceButton
 
     private lateinit var inputEditMessage: EditText
     private var sleep: Long = 500
@@ -63,12 +65,16 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         inputMoreLayout = this.findViewById(R.id.input_container_more)
         inputEmojiLayout = this.findViewById(R.id.input_container_emoji)
         inputSend = this.findViewById(R.id.input_send)
+        inputVoice=this.findViewById(R.id.input_voice)
+        inputPressSpeak=this.findViewById(R.id.input_speak_voice)
 
+        inputVoice.setOnClickListener(this)
         inputSend.setOnClickListener(this)
         inputMore.setOnClickListener(this)
         inputEmoji.setOnClickListener(this)
         inputEditMessage.setOnTouchListener(this)
         inputEditMessage.addTextChangedListener(this)
+        inputPressSpeak.setStatusListener(this)
         //获取缓存中的软键盘高度
         val height = InputUtil.getKeyboardHeight(context)
         setContainerHeight(height)
@@ -84,6 +90,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         return false
     }
 
+    private  var isPress:Boolean = false
     override fun onClick(v: View) {
         when {
             v.id == R.id.input_more -> if (isContainerShowing() && isMoreShowing()) {
@@ -99,8 +106,18 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
                 setContainerLayout(true)
             }
             v.id == R.id.input_send ->{
-                mInputListener.onSend()
+                val str=inputEditMessage.text.toString()
+                mInputListener.onSend(str)
                 inputEditMessage.setText("")
+            }
+            v.id== R.id.input_voice ->{
+                if (isPress){
+
+                }else{
+
+                }
+                setInputSpeakLayout(isPress)
+                isPress=!isPress
             }
 
         }
@@ -121,6 +138,13 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     private fun setContainerLayout(boolean: Boolean) {
         val show = if (boolean) inputEmojiLayout else inputMoreLayout
         val hide = if (!boolean) inputEmojiLayout else inputMoreLayout
+        show.visibility = View.VISIBLE
+        hide.visibility = View.GONE
+    }
+
+    private fun setInputSpeakLayout(boolean: Boolean) {
+        val show = if (boolean) inputPressSpeak else inputEditMessage
+        val hide = if (!boolean) inputPressSpeak else inputEditMessage
         show.visibility = View.VISIBLE
         hide.visibility = View.GONE
     }
@@ -209,7 +233,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         }
         mLayoutBottom = b
     }
-
+    /******************************暴露给外部的方法**************************************/
 
     /**
      *关闭软键盘和容器布局
@@ -224,6 +248,10 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
      */
     fun setInputListener(listener: InputListener) {
         this.mInputListener = listener
+    }
+
+    fun isNeedVoice(isNeed:Boolean){
+
     }
 
     /******************************输入框的内容监听**************************************/
@@ -256,5 +284,10 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         hide.visibility = View.INVISIBLE
     }
 
+    /******************************发送语音的按钮状态**************************************/
+
+    override fun onStatus(status: VoicePressEnum) {
+        LogUtil.logd(status.value)
+    }
 }
 

@@ -12,5 +12,5 @@ interface InputListener {
     /**
      * 发送监听
      */
-    fun onSend()
+    fun onSend(text: String)
 }

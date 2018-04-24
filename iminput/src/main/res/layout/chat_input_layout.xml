@@ -19,17 +19,33 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:src="@drawable/ic_cheat_voice"/>
-
-        <EditText
-            android:id="@+id/input_edit_message"
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:layout_weight="1"
-            android:background="@drawable/im_message_import"
-            android:maxLines="3"
-            android:padding="7dp"
-            android:textSize="13sp"/>
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/input_edit_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/im_message_import"
+                android:maxLines="3"
+                android:padding="7dp"
+                android:textSize="13sp"/>
+
+            <com.iminput.widget.VoiceButton
+                android:id="@+id/input_speak_voice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:background="@drawable/im_message_import"
+                android:text="按住 说话"
+                android:textColor="@color/black"
+                android:padding="7dp"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
 
         <ImageView
             android:id="@+id/input_emoji"
@@ -46,12 +62,12 @@
                 android:id="@+id/input_send"
                 android:layout_width="40dp"
                 android:layout_height="27dp"
-                android:padding="5dp"
-                android:paddingRight="7dp"
-                android:paddingLeft="7dp"
                 android:layout_gravity="center_vertical"
-                android:gravity="center"
                 android:background="@drawable/im_message_send"
+                android:gravity="center"
+                android:padding="5dp"
+                android:paddingLeft="7dp"
+                android:paddingRight="7dp"
                 android:text="发送"
                 android:textColor="@color/white"
                 android:textSize="12sp"

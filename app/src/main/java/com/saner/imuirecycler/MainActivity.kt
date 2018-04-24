@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
 
 
 
-    private lateinit var mDatas: ArrayList<IMessage>
+
     private lateinit var mAdapter: IMRecyclerAdapter
 
 
@@ -33,40 +33,39 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
-        initData()
+        initRecycler()
+        loadData()
+    }
+
+    private fun loadData() {
+        val messages: ArrayList<MyMessage> = ArrayList()
+        for (i in 1..30) {
+            if (i % 2 == 0) {
+                messages.add(getMessage(i, MessageDirection.In, MessageType.text, getString(R.string.message)))
+            } else {
+                messages.add(getMessage(i, MessageDirection.Out, MessageType.image, getString(R.string.message)))
+            }
+        }
+        messages.reverse()
+        mAdapter.addMoreMessage(messages)
     }
 
     private fun initView() {
         input_layout.setInputListener(this)
     }
 
-
-
-
-
-
-    private fun initData() {
-        mDatas = ArrayList()
-        for (i in 1..30) {
-            if (i % 2 == 0) {
-                mDatas.add(getMessage(i, MessageDirection.Out, MessageType.image, getString(R.string.message)))
-            } else {
-                mDatas.add(getMessage(i, MessageDirection.In, MessageType.text, getString(R.string.message)))
-            }
-        }
-
+    private fun initRecycler() {
+         val messages: ArrayList<MyMessage> = ArrayList()
         ViewHelperFactory.register(MessageType.image, PhotoViewHelper::class.java)
-
-        mAdapter = IMRecyclerAdapter(mDatas)
+        mAdapter = IMRecyclerAdapter(messages)
         recycler_view.setAdapter(mAdapter)
         mAdapter.setHelperEvent(this)
         mAdapter.setImageLoader(this)
-
     }
 
 
 
-    private fun getMessage(i: Int, direction: MessageDirection, messageType: MessageType, content: String): IMessage {
+    private fun getMessage(i: Int, direction: MessageDirection, messageType: MessageType, content: String): MyMessage {
         val message = MyMessage()
         message.setMsgId(i.toString())
         message.setMsgType(messageType)
@@ -108,8 +107,8 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
     override fun onLoadMore() {
         loadMoreBar.visibility=View.VISIBLE
         Handler().postDelayed({
-            val datas = ArrayList<IMessage>()
-            for (i in 1..30) {
+            val datas = ArrayList<MyMessage>()
+            for (i in 1..3) {
                 datas.add(getMessage(i, MessageDirection.Out, MessageType.text, "加载更多"))
             }
             mAdapter.addMoreMessage(datas)
@@ -120,8 +119,7 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
 
     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
         if (recyclerView!!.scrollState == RecyclerView.SCROLL_STATE_DRAGGING) {
-            if (dy > 0) {
-            } else {
+            if (dy <= 0) {
                 hideInput()
             }
         }
@@ -150,9 +148,9 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         }
     }
 
-    override fun onSend() {
+    override fun onSend(text: String) {
         LogUtil.logd("发送")
-        mAdapter.addNewMessage(getMessage(mDatas.size, MessageDirection.Out, MessageType.text, "添加一条心消息"))
+        mAdapter.addNewMessage(getMessage(9527, MessageDirection.Out, MessageType.text, text))
 
     }
 }
