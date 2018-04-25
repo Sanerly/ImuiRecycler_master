@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.TextView
-import com.iminput.util.LogUtil
+import com.iminput.listener.IPressStatusListener
 
 /**
  * 按住说话
@@ -24,14 +24,14 @@ class VoiceButton : TextView {
      */
     private var mDistance: Float = 0.0f
 
-    private lateinit var listener: onStatusListener
+    private lateinit var listener: IPressStatusListener
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-
+        text = "按住 说话"
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -49,7 +49,7 @@ class VoiceButton : TextView {
                 currentY = event.y
                 mDistance = downY - currentY
                 text = when {
-                    mDistance > 300 -> {
+                    mDistance > 450 -> {
                         listener.onStatus(VoicePressEnum.VOICE_RELEASE_CANCEL)
                         "松开手指，取消发送"
                     }
@@ -64,11 +64,8 @@ class VoiceButton : TextView {
     }
 
 
-    fun setStatusListener(listener: onStatusListener) {
+    fun setStatusListener(listener: IPressStatusListener) {
         this.listener = listener
     }
 
-    interface onStatusListener {
-        fun onStatus(status: VoicePressEnum)
-    }
 }

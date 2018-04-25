@@ -18,11 +18,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_cheat_voice"/>
+            android:src="@drawable/ic_chat_voice"/>
+
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <com.iminput.widget.VoiceButton
+                android:id="@+id/input_speak_voice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/im_message_import"
+                android:gravity="center"
+                android:padding="7dp"
+                android:textColor="@color/black"
+                android:textSize="13sp"/>
+
             <EditText
                 android:id="@+id/input_edit_message"
                 android:layout_width="match_parent"
@@ -33,17 +46,7 @@
                 android:padding="7dp"
                 android:textSize="13sp"/>
 
-            <com.iminput.widget.VoiceButton
-                android:id="@+id/input_speak_voice"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:gravity="center"
-                android:background="@drawable/im_message_import"
-                android:text="按住 说话"
-                android:textColor="@color/black"
-                android:padding="7dp"
-                android:textSize="13sp"/>
+
         </RelativeLayout>
 
 
@@ -52,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_cheat_emo"/>
+            android:src="@drawable/ic_chat_emo"/>
 
         <FrameLayout
             android:layout_width="wrap_content"
@@ -78,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:src="@drawable/ic_cheat_add"
+                android:src="@drawable/ic_chat_add"
                 android:visibility="visible"/>
         </FrameLayout>
 

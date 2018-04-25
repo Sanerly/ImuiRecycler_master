@@ -10,17 +10,17 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import com.iminput.R
+import com.iminput.listener.IPressStatusListener
 import com.iminput.listener.InputListener
 import com.iminput.util.DisplayUtil
-import com.iminput.util.InputUtil
+import com.iminput.util.InputLayoutUtil
 import com.iminput.util.LogUtil
 
 
 /**
  * Created by sunset on 2018/3/22.
  */
-class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher,VoiceButton.onStatusListener {
-
+class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher, IPressStatusListener {
 
 
     private var isShow: Boolean = false
@@ -37,13 +37,23 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     private lateinit var inputMoreLayout: RelativeLayout
     private lateinit var inputEmojiLayout: RelativeLayout
     private lateinit var inputSend: Button
-    private lateinit var inputVoice:ImageView
-    private lateinit var inputPressSpeak:VoiceButton
-
+    private lateinit var inputVoice: ImageView
+    private lateinit var inputPressSpeak: VoiceButton
     private lateinit var inputEditMessage: EditText
-    private var sleep: Long = 500
 
+    private var sleep: Long = 500
+    /**
+     * 对外的接口
+     */
     private lateinit var mInputListener: InputListener
+    /**
+     * 控制输入框和按下说话按钮切换
+     */
+    private var isPress: Boolean = false
+
+
+    private var isEmoji:Boolean=true
+
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -65,8 +75,8 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         inputMoreLayout = this.findViewById(R.id.input_container_more)
         inputEmojiLayout = this.findViewById(R.id.input_container_emoji)
         inputSend = this.findViewById(R.id.input_send)
-        inputVoice=this.findViewById(R.id.input_voice)
-        inputPressSpeak=this.findViewById(R.id.input_speak_voice)
+        inputVoice = this.findViewById(R.id.input_voice)
+        inputPressSpeak = this.findViewById(R.id.input_speak_voice)
 
         inputVoice.setOnClickListener(this)
         inputSend.setOnClickListener(this)
@@ -74,53 +84,83 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         inputEmoji.setOnClickListener(this)
         inputEditMessage.setOnTouchListener(this)
         inputEditMessage.addTextChangedListener(this)
+        //设置按下说话的状态监听
         inputPressSpeak.setStatusListener(this)
         //获取缓存中的软键盘高度
-        val height = InputUtil.getKeyboardHeight(context)
+        val height = InputLayoutUtil.getKeyboardHeight(context)
         setContainerHeight(height)
-
+        //设置默认显示输入框
+        setInputSpeakLayout(isPress)
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (event!!.action == MotionEvent.ACTION_UP) {
-            if (isContainerShowing()) {
+            if (isContainerVisible()) {
+                defaultEmoji()
                 inputContainer.postDelayed(mHideContainerRunnable, sleep)
             }
         }
         return false
     }
 
-    private  var isPress:Boolean = false
+
     override fun onClick(v: View) {
-        when {
-            v.id == R.id.input_more -> if (isContainerShowing() && isMoreShowing()) {
-                switchKeyboard()
-            } else {
-                showContainer()
-                setContainerLayout(false)
+        when (v.id) {
+            R.id.input_more ->{
+                if (isVoiceVisible()){
+                    isPress = false
+                    setInputSpeakLayout(isPress)
+                }
+                defaultEmoji()
+                if (isContainerVisible() && isMoreVisible()) {
+                    switchKeyboard()
+                } else {
+                    showContainer()
+                    setContainerLayout(false)
+                }
+
             }
-            v.id == R.id.input_emoji -> if (isContainerShowing() && isEmojiShowing()) {
-                switchKeyboard()
-            } else {
-                showContainer()
-                setContainerLayout(true)
+            R.id.input_emoji -> {
+                if (isVoiceVisible()){
+                    isPress = false
+                    setInputSpeakLayout(isPress)
+                }
+                if (isContainerVisible() && isEmojiVisible()) {
+                    switchKeyboard()
+                } else {
+                    showContainer()
+                    setContainerLayout(true)
+                }
+                switchEmojiRes()
             }
-            v.id == R.id.input_send ->{
-                val str=inputEditMessage.text.toString()
+            R.id.input_send -> {
+                val str = inputEditMessage.text.toString()
                 mInputListener.onSend(str)
                 inputEditMessage.setText("")
             }
-            v.id== R.id.input_voice ->{
-                if (isPress){
-
-                }else{
-
-                }
-                setInputSpeakLayout(isPress)
-                isPress=!isPress
+            R.id.input_voice -> {
+                defaultEmoji()
+                switchPressInput()
             }
-
         }
+    }
+
+    /**
+     * 默认显示表情图片
+     */
+    private fun defaultEmoji() {
+        isEmoji = false
+        switchEmojiRes()
+    }
+
+
+    /**
+     * 切换表情按钮的图片--emoji和keyboard
+     */
+    private fun switchEmojiRes() {
+        val srcRes = if (isEmoji) R.drawable.ic_chat_keyboard else R.drawable.ic_chat_emo
+        inputEmoji.setImageResource(srcRes)
+        isEmoji = !isEmoji
     }
 
 
@@ -128,7 +168,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
      * 切换软键盘可见和隐藏
      */
     private fun switchKeyboard() {
-        InputUtil.toggleSoftInput(inputEditMessage)
+        InputLayoutUtil.toggleSoftInput(inputEditMessage)
         inputContainer.postDelayed(mHideContainerRunnable, sleep)
     }
 
@@ -142,51 +182,69 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         hide.visibility = View.GONE
     }
 
+
+    /**
+     * 切换输入框和按下说话的按钮，以及当软键盘弹出时输入框获取焦点
+     */
+    private fun switchPressInput() {
+        if (isPress) {
+            hideInputLayout()
+        } else {
+            switchKeyboard()
+            visibleCursor()
+        }
+        setInputSpeakLayout(isPress)
+    }
+
+    /**
+     * 切换输入框和按下说话的按钮，切换语音图标和键盘图标
+     */
     private fun setInputSpeakLayout(boolean: Boolean) {
         val show = if (boolean) inputPressSpeak else inputEditMessage
         val hide = if (!boolean) inputPressSpeak else inputEditMessage
         show.visibility = View.VISIBLE
         hide.visibility = View.GONE
+        val srcRes = if (boolean) R.drawable.ic_chat_keyboard else R.drawable.ic_chat_voice
+        inputVoice.setImageResource(srcRes)
+        isPress = !isPress
     }
 
     /**
      * 判断更多容器是否正在可见状态
      */
-    private fun isMoreShowing(): Boolean {
-        return inputMoreLayout.visibility == View.VISIBLE
-    }
+    private fun isMoreVisible(): Boolean = inputMoreLayout.visibility == View.VISIBLE
 
     /**
      * 判断表情容器是否正在可见状态
      */
-    private fun isEmojiShowing(): Boolean {
-        return inputEmojiLayout.visibility == View.VISIBLE
-    }
+    private fun isEmojiVisible(): Boolean = inputEmojiLayout.visibility == View.VISIBLE
 
     /**
      * 判断一级容器是否可见
      */
-    private fun isContainerShowing(): Boolean {
-        return inputContainer.visibility == View.VISIBLE
-    }
+    private fun isContainerVisible(): Boolean = inputContainer.visibility == View.VISIBLE
 
+    /**
+     * 判断语音按钮是否可见
+     */
+    private  fun isVoiceVisible(): Boolean = inputVoice.visibility == View.VISIBLE
     /**
      * 显示一级容器
      */
     private fun showContainer() {
         inputContainer.removeCallbacks(mHideContainerRunnable)
-        InputUtil.updateSoftInputMethod((context as Activity), WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+        InputLayoutUtil.updateSoftInputMethod((context as Activity), WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
         inputContainer.visibility = View.VISIBLE
-        InputUtil.hideKeyboard(inputEditMessage)
+        InputLayoutUtil.hideKeyboard(inputEditMessage)
     }
 
     /**
      * 隐藏一级容器
      */
     private fun hideContainer() {
-        if (isContainerShowing()) {
+        if (isContainerVisible()) {
             inputContainer.visibility = View.GONE
-            InputUtil.updateSoftInputMethod((context as Activity), WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            InputLayoutUtil.updateSoftInputMethod((context as Activity), WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -204,6 +262,14 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
 
     private val mHideContainerRunnable = Runnable { hideContainer() }
 
+    /**
+     * 设置显示输入框的光标
+     */
+    private fun visibleCursor() {
+        inputEditMessage.postDelayed(mRequestFocusRunnable, sleep)
+    }
+
+    private val mRequestFocusRunnable = Runnable { inputEditMessage.requestFocus() }
 
     /**
      * 计算软键盘的高度
@@ -226,7 +292,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
             val h = mHideHeight - mShowHeight
             if (h > 0 && !isHas) {
                 mKeyBoardHeight = h
-                InputUtil.setKeyboardHeight(mKeyBoardHeight, context)
+                InputLayoutUtil.setKeyboardHeight(mKeyBoardHeight, context)
                 setContainerHeight(mKeyBoardHeight)
                 isHas = true
             }
@@ -239,7 +305,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
      *关闭软键盘和容器布局
      */
     fun hideInputLayout() {
-        InputUtil.hideKeyboard(inputEditMessage)
+        InputLayoutUtil.hideKeyboard(inputEditMessage)
         inputContainer.postDelayed(mHideContainerRunnable, 0)
     }
 
@@ -250,9 +316,14 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         this.mInputListener = listener
     }
 
-    fun isNeedVoice(isNeed:Boolean){
-
+    /**
+     * 设置是否需要语音
+     */
+    fun isNeedVoice(isNeed: Boolean) {
+        inputVoice.visibility = if (isNeed) View.VISIBLE else View.GONE
     }
+
+
 
     /******************************输入框的内容监听**************************************/
 
@@ -278,8 +349,8 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
      * @param isVisi =true表示发送按钮显示 =false 表示发送按钮隐藏
      */
     private fun isMoreOrSend(isVisi: Boolean) {
-        val hide = if (isVisi) inputMore else inputSend
         val show = if (isVisi) inputSend else inputMore
+        val hide = if (isVisi) inputMore else inputSend
         show.visibility = View.VISIBLE
         hide.visibility = View.INVISIBLE
     }

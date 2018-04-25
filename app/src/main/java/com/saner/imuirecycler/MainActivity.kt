@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
 
     private fun initView() {
         input_layout.setInputListener(this)
+        input_layout.isNeedVoice(true)
     }
 
     private fun initRecycler() {
@@ -107,11 +108,11 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
     override fun onLoadMore() {
         loadMoreBar.visibility=View.VISIBLE
         Handler().postDelayed({
-            val datas = ArrayList<MyMessage>()
+            val messages = ArrayList<MyMessage>()
             for (i in 1..3) {
-                datas.add(getMessage(i, MessageDirection.Out, MessageType.text, "加载更多"))
+                messages.add(getMessage(i, MessageDirection.Out, MessageType.text, "加载更多"))
             }
-            mAdapter.addMoreMessage(datas)
+            mAdapter.addMoreMessage(messages)
             loadMoreBar.visibility=View.GONE
         }, 1000)
 

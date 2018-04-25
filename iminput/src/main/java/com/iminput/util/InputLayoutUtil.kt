@@ -11,7 +11,7 @@ import android.annotation.SuppressLint
 /**
  * @author xh2009cn
  */
-object InputUtil {
+object InputLayoutUtil {
 
 
     private const val KEYBOARD: String = "key_board_height"
