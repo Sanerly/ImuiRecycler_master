@@ -30,9 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:background="@drawable/im_message_import"
                 android:gravity="center"
-                android:padding="7dp"
                 android:textColor="@color/black"
                 android:textSize="13sp"/>
 
@@ -43,7 +41,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/im_message_import"
                 android:maxLines="3"
-                android:padding="7dp"
+                android:visibility="gone"
                 android:textSize="13sp"/>
 
 

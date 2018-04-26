@@ -24,10 +24,7 @@ import saner.com.imlist.interfaces.Imageloader
 class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Imageloader {
 
 
-
-
     private lateinit var mAdapter: IMRecyclerAdapter
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +50,7 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
     private fun initView() {
         input_layout.setInputListener(this)
         input_layout.isNeedVoice(true)
+        input_layout.addVoiceLayout(voice_layout)
     }
 
     private fun initRecycler() {
@@ -149,9 +147,11 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         }
     }
 
-    override fun onSend(text: String) {
-        LogUtil.logd("发送")
+    override fun onTextSend(text: String) {
         mAdapter.addNewMessage(getMessage(9527, MessageDirection.Out, MessageType.text, text))
 
+    }
+    override fun onVoiceSend() {
+        mAdapter.addNewMessage(getMessage(9527, MessageDirection.Out, MessageType.text, "语音消息"))
     }
 }

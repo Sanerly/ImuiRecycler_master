@@ -14,13 +14,12 @@ import com.iminput.listener.IPressStatusListener
 import com.iminput.listener.InputListener
 import com.iminput.util.DisplayUtil
 import com.iminput.util.InputLayoutUtil
-import com.iminput.util.LogUtil
 
 
 /**
  * Created by sunset on 2018/3/22.
  */
-class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher, IPressStatusListener {
+class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, TextWatcher, View.OnFocusChangeListener, IPressStatusListener {
 
 
     private var isShow: Boolean = false
@@ -48,11 +47,14 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     private lateinit var mInputListener: InputListener
     /**
      * 控制输入框和按下说话按钮切换
+     * false 时显示输入框，true 显示语音按钮
      */
     private var isPress: Boolean = false
 
 
-    private var isEmoji:Boolean=true
+    private var isEmoji: Boolean = true
+
+    private var mVoiceLayout: VoiceWindow? = null
 
 
     constructor(context: Context?) : super(context)
@@ -84,6 +86,7 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         inputEmoji.setOnClickListener(this)
         inputEditMessage.setOnTouchListener(this)
         inputEditMessage.addTextChangedListener(this)
+        inputEditMessage.onFocusChangeListener = this
         //设置按下说话的状态监听
         inputPressSpeak.setStatusListener(this)
         //获取缓存中的软键盘高度
@@ -106,8 +109,8 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.input_more ->{
-                if (isVoiceVisible()){
+            R.id.input_more -> {
+                if (isVoiceVisible()) {
                     isPress = false
                     setInputSpeakLayout(isPress)
                 }
@@ -118,10 +121,10 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
                     showContainer()
                     setContainerLayout(false)
                 }
-
+                hideCursor()
             }
             R.id.input_emoji -> {
-                if (isVoiceVisible()){
+                if (isVoiceVisible()) {
                     isPress = false
                     setInputSpeakLayout(isPress)
                 }
@@ -131,19 +134,22 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
                     showContainer()
                     setContainerLayout(true)
                 }
+                showCursor()
                 switchEmojiRes()
             }
             R.id.input_send -> {
                 val str = inputEditMessage.text.toString()
-                mInputListener.onSend(str)
+                mInputListener.onTextSend(str)
                 inputEditMessage.setText("")
             }
             R.id.input_voice -> {
                 defaultEmoji()
+
                 switchPressInput()
             }
         }
     }
+
 
     /**
      * 默认显示表情图片
@@ -190,8 +196,9 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
         if (isPress) {
             hideInputLayout()
         } else {
+            isMoreOrSend(false)
             switchKeyboard()
-            visibleCursor()
+            showCursor()
         }
         setInputSpeakLayout(isPress)
     }
@@ -227,7 +234,8 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     /**
      * 判断语音按钮是否可见
      */
-    private  fun isVoiceVisible(): Boolean = inputVoice.visibility == View.VISIBLE
+    private fun isVoiceVisible(): Boolean = inputVoice.visibility == View.VISIBLE
+
     /**
      * 显示一级容器
      */
@@ -263,10 +271,17 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     private val mHideContainerRunnable = Runnable { hideContainer() }
 
     /**
-     * 设置显示输入框的光标
+     * 显示输入框的光标
      */
-    private fun visibleCursor() {
+    private fun showCursor() {
         inputEditMessage.postDelayed(mRequestFocusRunnable, sleep)
+    }
+
+    /**
+     * 隐藏输入框的光标
+     */
+    private fun hideCursor() {
+        inputEditMessage.clearFocus()
     }
 
     private val mRequestFocusRunnable = Runnable { inputEditMessage.requestFocus() }
@@ -324,6 +339,9 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     }
 
 
+    fun addVoiceLayout(view: VoiceWindow) {
+        mVoiceLayout = view
+    }
 
     /******************************输入框的内容监听**************************************/
 
@@ -331,7 +349,6 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -342,6 +359,15 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
             isMoreOrSend(false)
         }
 
+    }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        val edit = v as EditText
+        if (hasFocus && edit.text.toString().isNotEmpty()) {
+            isMoreOrSend(true)
+        } else {
+            isMoreOrSend(false)
+        }
     }
 
     /**
@@ -358,7 +384,9 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
     /******************************发送语音的按钮状态**************************************/
 
     override fun onStatus(status: VoicePressEnum) {
-        LogUtil.logd(status.value)
+//        LogUtil.logd(status.value)
+        if (mVoiceLayout == null) return
+        mVoiceLayout!!.onStatusObserver(mInputListener, status)
     }
 }
 

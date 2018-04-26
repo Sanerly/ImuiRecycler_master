@@ -10,7 +10,11 @@ interface InputListener {
     fun onSoftKeyboardStatus(status: Boolean)
 
     /**
-     * 发送监听
+     * 发送文本消息监听
      */
-    fun onSend(text: String)
+    fun onTextSend(text: String)
+    /**
+     * 发送语音消息
+     */
+    fun onVoiceSend()
 }

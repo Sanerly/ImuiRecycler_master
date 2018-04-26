@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.TextView
+import com.iminput.R
 import com.iminput.listener.IPressStatusListener
 
 /**
@@ -32,6 +33,7 @@ class VoiceButton : TextView {
 
     init {
         text = "按住 说话"
+        setBackgroundResource(R.drawable.im_message_import)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -39,15 +41,18 @@ class VoiceButton : TextView {
             event.action == MotionEvent.ACTION_DOWN -> {
                 downY = event.y
                 text = "松开 发送"
+                setBackgroundResource(R.drawable.im_message_press_import)
                 listener.onStatus(VoicePressEnum.VOICE_RELEASE_SEND)
             }
             event.action == MotionEvent.ACTION_UP -> {
                 text = "按住 说话"
+                setBackgroundResource(R.drawable.im_message_import)
                 listener.onStatus(VoicePressEnum.VOICE_PRESS_SPEAK)
             }
             event.action == MotionEvent.ACTION_MOVE -> {
                 currentY = event.y
                 mDistance = downY - currentY
+                setBackgroundResource(R.drawable.im_message_press_import)
                 text = when {
                     mDistance > 450 -> {
                         listener.onStatus(VoicePressEnum.VOICE_RELEASE_CANCEL)

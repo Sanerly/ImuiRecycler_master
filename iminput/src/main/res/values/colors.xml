@@ -10,4 +10,8 @@
 
     <color name="message_send">#63c2f7</color>
     <color name="default_bg">#ECECEC</color>
+
+    <color name="input_stroke">#7F8389</color>
+    <color name="input_press">#9EA1A6</color>
+
 </resources>
