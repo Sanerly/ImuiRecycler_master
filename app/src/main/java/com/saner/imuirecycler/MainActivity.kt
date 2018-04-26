@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import com.iminput.listener.InputListener
 import com.iminput.util.LogUtil
+import com.iminput.widget.MoreBaseAction
+import com.saner.imuirecycler.input.moreAction.ImageAction
 import com.saner.imuirecycler.list.IMRecyclerAdapter
 import com.saner.imuirecycler.util.IMConfig
 import kotlinx.android.synthetic.main.activity_main.*
@@ -51,17 +53,23 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         input_layout.setInputListener(this)
         input_layout.isNeedVoice(true)
         input_layout.addVoiceLayout(voice_layout)
+
+        val mActions: ArrayList<MoreBaseAction> = ArrayList()
+        for (i in 0..10) {
+            val imageA = ImageAction()
+            mActions.add(imageA)
+        }
+        input_layout.addMoreActions(mActions)
     }
 
     private fun initRecycler() {
-         val messages: ArrayList<MyMessage> = ArrayList()
+        val messages: ArrayList<MyMessage> = ArrayList()
         ViewHelperFactory.register(MessageType.image, PhotoViewHelper::class.java)
         mAdapter = IMRecyclerAdapter(messages)
         recycler_view.setAdapter(mAdapter)
         mAdapter.setHelperEvent(this)
         mAdapter.setImageLoader(this)
     }
-
 
 
     private fun getMessage(i: Int, direction: MessageDirection, messageType: MessageType, content: String): MyMessage {
@@ -104,14 +112,14 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
 
 
     override fun onLoadMore() {
-        loadMoreBar.visibility=View.VISIBLE
+        loadMoreBar.visibility = View.VISIBLE
         Handler().postDelayed({
             val messages = ArrayList<MyMessage>()
             for (i in 1..3) {
                 messages.add(getMessage(i, MessageDirection.Out, MessageType.text, "加载更多"))
             }
             mAdapter.addMoreMessage(messages)
-            loadMoreBar.visibility=View.GONE
+            loadMoreBar.visibility = View.GONE
         }, 1000)
 
     }
@@ -127,7 +135,6 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
     override fun loadImage(imageView: ImageView, url: String) {
         IMConfig.loadImage(imageView, url)
     }
-
 
 
     private fun toast(string: String) {
@@ -151,6 +158,7 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         mAdapter.addNewMessage(getMessage(9527, MessageDirection.Out, MessageType.text, text))
 
     }
+
     override fun onVoiceSend() {
         mAdapter.addNewMessage(getMessage(9527, MessageDirection.Out, MessageType.text, "语音消息"))
     }

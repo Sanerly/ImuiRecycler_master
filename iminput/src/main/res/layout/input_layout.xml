@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/input_voice"
+            android:id="@+id/inputVoice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -26,7 +26,7 @@
             android:layout_weight="1">
 
             <com.iminput.widget.VoiceButton
-                android:id="@+id/input_speak_voice"
+                android:id="@+id/inputPressSpeak"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -35,7 +35,7 @@
                 android:textSize="13sp"/>
 
             <EditText
-                android:id="@+id/input_edit_message"
+                android:id="@+id/inputEditMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -49,7 +49,7 @@
 
 
         <ImageView
-            android:id="@+id/input_emoji"
+            android:id="@+id/inputEmoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -59,8 +59,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/input_send"
+            <TextView
+                android:id="@+id/inputSend"
                 android:layout_width="40dp"
                 android:layout_height="27dp"
                 android:layout_gravity="center_vertical"
@@ -75,7 +75,7 @@
                 android:visibility="invisible"/>
 
             <ImageView
-                android:id="@+id/input_more"
+                android:id="@+id/inputMore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
@@ -86,28 +86,28 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/input_container"
+        android:id="@+id/inputContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/default_bg"
         android:visibility="gone">
 
-        <RelativeLayout
-            android:id="@+id/input_container_more"
+        <com.iminput.widget.MoreLayout
+            android:id="@+id/inputMoreLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="gone"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="10dp"
-                android:text="更多"/>
-        </RelativeLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:text="更多"/>-->
+        <!--</MoreLayout>-->
 
         <RelativeLayout
-            android:id="@+id/input_container_emoji"
+            android:id="@+id/inputEmojiLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone">
