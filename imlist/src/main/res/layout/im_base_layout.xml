@@ -7,7 +7,7 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp">
 
-    <saner.com.imlist.widget.CustomImageView
+    <saner.com.imlist.widget.AvatarImageView
         android:id="@+id/im_base_left_avatar"
         android:layout_width="46dp"
         android:layout_height="46dp"
@@ -58,7 +58,7 @@
     </FrameLayout>
 
 
-    <saner.com.imlist.widget.CustomImageView
+    <saner.com.imlist.widget.AvatarImageView
         android:id="@+id/im_base_right_avatar"
         android:layout_width="46dp"
         android:layout_height="46dp"

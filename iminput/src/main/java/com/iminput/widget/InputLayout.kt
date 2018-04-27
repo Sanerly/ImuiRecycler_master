@@ -324,6 +324,9 @@ class InputLayout : LinearLayout, View.OnClickListener, View.OnTouchListener, Te
      * 添加更多布局中子视图
      */
     fun addMoreActions(actions: ArrayList<MoreBaseAction>) {
+        for (i in 0 until actions.size){
+            actions[i].setListener(mInputListener)
+        }
         inputMoreLayout.setActions(actions)
     }
 

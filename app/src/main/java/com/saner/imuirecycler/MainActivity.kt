@@ -8,9 +8,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import com.iminput.listener.InputListener
-import com.iminput.util.LogUtil
 import com.iminput.widget.MoreBaseAction
-import com.saner.imuirecycler.input.moreAction.ImageAction
+import com.saner.imuirecycler.input.action.ImageAction
+import com.saner.imuirecycler.input.action.VideoAction
 import com.saner.imuirecycler.list.IMRecyclerAdapter
 import com.saner.imuirecycler.util.IMConfig
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,12 +18,13 @@ import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.MessageDirection
 import saner.com.imlist.model.MessageType
 import com.saner.imuirecycler.model.MyMessage
-import saner.com.imlist.helper.PhotoViewHelper
+import com.saner.imuirecycler.list.helper.PhotoViewHelper
 import saner.com.imlist.holder.ViewHelperFactory
 import saner.com.imlist.interfaces.ViewHelperListener
 import saner.com.imlist.interfaces.Imageloader
 
 class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Imageloader {
+
 
 
     private lateinit var mAdapter: IMRecyclerAdapter
@@ -55,10 +56,10 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         input_layout.addVoiceLayout(voice_layout)
 
         val mActions: ArrayList<MoreBaseAction> = ArrayList()
-        for (i in 0..10) {
-            val imageA = ImageAction()
-            mActions.add(imageA)
-        }
+        mActions.add(VideoAction())
+        mActions.add(ImageAction())
+        mActions.add(VideoAction())
+        mActions.add(ImageAction())
         input_layout.addMoreActions(mActions)
     }
 
@@ -76,7 +77,7 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
         val message = MyMessage()
         message.setMsgId(i.toString())
         message.setMsgType(messageType)
-        message.setMsgText("$i   $content")
+        message.setMsgText(content)
         message.setMsgDirection(direction)
         if (MessageDirection.Out == direction) {
             message.setUserAvatar("http://img3.imgtn.bdimg.com/it/u=1486014782,3060017975&fm=27&gp=0.jpg")
@@ -162,4 +163,10 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
     override fun onVoiceSend() {
         mAdapter.addNewMessage(getMessage(9527, MessageDirection.Out, MessageType.text, "语音消息"))
     }
+
+    override fun <T> onMoreSend(data: T) {
+        val message:MyMessage=data as MyMessage
+        mAdapter.addNewMessage(message)
+    }
+
 }

@@ -2,9 +2,6 @@ package com.iminput.util
 
 import android.util.Log
 
-/**
- * Created by sunset on 2018/3/14.
- */
 object LogUtil {
     private const val LOG_TAG: String = "IM_UI_INPUT"
     fun loge(string: String) {

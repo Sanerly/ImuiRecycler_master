@@ -14,7 +14,7 @@ import saner.com.imlist.holder.MessageViewHolder
 import saner.com.imlist.model.IMessage
 import saner.com.imlist.model.MessageDirection
 import saner.com.imlist.interfaces.ViewHelperListener
-import saner.com.imlist.widget.CustomImageView
+import saner.com.imlist.widget.AvatarImageView
 
 /**
  * 处理消息的基类
@@ -26,9 +26,9 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
     lateinit var mContext: Context
 
 
-    private lateinit var mLeftAvatar: CustomImageView
+    private lateinit var mLeftAvatar: AvatarImageView
 
-    private lateinit var mRightAvatar: CustomImageView
+    private lateinit var mRightAvatar: AvatarImageView
 
     private lateinit var mLayoutContent: FrameLayout
 
@@ -132,8 +132,8 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
      * 设置显示自己或者对方的头像
      */
     private fun setAvatarView() {
-        val show: CustomImageView = if (isMsgDirection()) mLeftAvatar else mRightAvatar
-        val hide: CustomImageView = if (isMsgDirection()) mRightAvatar else mLeftAvatar
+        val show: AvatarImageView = if (isMsgDirection()) mLeftAvatar else mRightAvatar
+        val hide: AvatarImageView = if (isMsgDirection()) mRightAvatar else mLeftAvatar
         hide.visibility = View.GONE
         if (!isShowHeadImage()) {
             show.visibility = View.GONE
@@ -142,8 +142,6 @@ abstract class BaseMessageViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : M
             show.visibility = View.GONE
         } else {
             show.visibility = View.VISIBLE
-            show.setBorderRadius(5f)
-            show.setStyleTyoe(CustomImageView.CIRCLE_TYPE)
             getAdapter().getImageLoader().loadImage(show, mMessage.getUserAvatar())
         }
 

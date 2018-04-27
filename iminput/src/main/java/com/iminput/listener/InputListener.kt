@@ -17,4 +17,10 @@ interface InputListener {
      * 发送语音消息
      */
     fun onVoiceSend()
+
+    /**
+     * 更多布局中的消息发送
+     */
+    fun <T> onMoreSend(data:T)
+
 }

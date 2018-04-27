@@ -1,9 +1,10 @@
-package saner.com.imlist.helper
+package com.saner.imuirecycler.list.helper
 
-import saner.com.imlist.R
+import com.saner.imuirecycler.R
 import saner.com.imlist.adapter.BaseRecyclerAdapter
+import saner.com.imlist.helper.BaseMessageViewHelper
 import saner.com.imlist.model.IMessage
-import saner.com.imlist.widget.CustomImageView
+import saner.com.imlist.widget.MessageImageView
 
 /**
  * Created by sunset on 2018/3/14.
@@ -12,15 +13,13 @@ import saner.com.imlist.widget.CustomImageView
 class PhotoViewHelper(adapter: BaseRecyclerAdapter<IMessage>) : BaseMessageViewHelper(adapter) {
 
 
-    private val url = "http://h.hiphotos.baidu.com/zhidao/pic/item/43a7d933c895d1438a696fa475f082025aaf071d.jpg"
+    private val url = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1524830290547&di=f79fdbccdf46d4b15c3442c502c59c1c&imgtype=0&src=http%3A%2F%2Fimg.douxie.com%2Fupload%2Fupload%2F2014%2F09%2F15%2F54169b02a5380.jpg"
 
-    private lateinit var mImagePhoto: CustomImageView
+    private lateinit var mImagePhoto: MessageImageView
 
 
     override fun inflateContentView() {
         mImagePhoto = findViewById(R.id.photo_image)
-        mImagePhoto.setStyleTyoe(CustomImageView.ROUND_TYPE)
-        mImagePhoto.setBorderRadius(15.toFloat())
     }
 
     override fun bindContentView() {

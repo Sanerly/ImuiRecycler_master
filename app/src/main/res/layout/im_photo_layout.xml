@@ -5,7 +5,7 @@
                 android:layout_margin="10dp">
 
 
-    <saner.com.imlist.widget.CustomImageView
+    <saner.com.imlist.widget.MessageImageView
         android:id="@+id/photo_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
