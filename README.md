@@ -1,4 +1,4 @@
-# 可以用于大部分聊天SDK的UI库<br />
+### 可以用于大部分聊天SDK的UI库<br />
 
 ![动态样例](http://chuantu.biz/t6/297/1524885032x-1404758335.gif)<br />
 
@@ -6,7 +6,7 @@
 1. 列表模块
 2. 输入区模块
 
-# 使用方法
+###  使用方法
 
 ```
 implementation 'com.github.Sunsetzp.ImuiRecycler_master:iminput:1.1'

@@ -21,7 +21,8 @@ class MessageListView : RecyclerView {
 
     fun <T : IMessage> setAdapter(adapter: BaseRecyclerAdapter<T>) {
         val manager = LinearLayoutManager(context)
-        manager.reverseLayout=true
+        manager.stackFromEnd=true
+        manager.reverseLayout = true
         layoutManager = manager
 
         val itemAnim = DefaultItemAnimator()

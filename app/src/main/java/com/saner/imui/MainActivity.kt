@@ -38,13 +38,14 @@ class MainActivity : AppCompatActivity(), ViewHelperListener, InputListener, Ima
 
     private fun loadData() {
         val messages: ArrayList<MyMessage> = ArrayList()
-        for (i in 1..30) {
+        for (i in 0 until 2) {
             if (i % 2 == 0) {
                 messages.add(getMessage(i, MessageDirection.In, MessageType.text, getString(R.string.message)))
             } else {
                 messages.add(getMessage(i, MessageDirection.Out, MessageType.image, getString(R.string.message)))
             }
         }
+//        messages.add(getMessage(0, MessageDirection.Out, MessageType.image, getString(R.string.message)))
         messages.reverse()
         mAdapter.addMoreMessage(messages)
     }
