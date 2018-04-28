@@ -19,4 +19,10 @@ iminpu主要实现功能有
 ```
 implementation 'com.github.Sunsetzp.ImuiRecycler_master:imlist:1.1'
 ```
-imlist主要功能有聊天列表实现，封装消息类型的基类方法，
+imlist主要功能有
+
+*  封装聊天列表的Adapter
+*  根据反射获取消息类型的helper类
+*  封装了列表的item基类
+
+<helf a="列表实现思路的详细介绍">
