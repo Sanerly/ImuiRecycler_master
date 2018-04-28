@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <com.iminput.widget.VoiceButton
+            <com.iminput.widget.voice.VoiceButton
                 android:id="@+id/inputPressSpeak"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
         android:background="@color/default_bg"
         android:visibility="gone">
 
-        <com.iminput.widget.MoreLayout
+        <com.iminput.widget.more.MoreLayout
             android:id="@+id/inputMoreLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
