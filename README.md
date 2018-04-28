@@ -1,5 +1,4 @@
-# ImuiRecycler_master
-可以用于大部分聊天SDK的UI库<br />
+# 可以用于大部分聊天SDK的UI库<br />
 
 ![动态样例](http://chuantu.biz/t6/297/1524885032x-1404758335.gif)<br />
 
