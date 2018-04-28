@@ -3,6 +3,10 @@
 
 ![动态样例](http://chuantu.biz/t6/297/1524885032x-1404758335.gif)<br />
 
+目前分为两个模块
+1. 列表模块
+2. 输入区模块
+
 # 使用方法
 
 ```
@@ -26,3 +30,6 @@ imlist主要功能有
 *  封装了列表的item基类
 
 [列表实现思路的详细介绍](https://blog.csdn.net/sinat_32089827/article/details/79653667)
+
+<font color='red' size='6'>具体使用方法可下载demo查看app目录下MainActivity文件。</font>
+
