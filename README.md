@@ -8,9 +8,9 @@
 
 ###  使用方法
 
-```
-implementation 'com.github.Sunsetzp.ImuiRecycler_master:iminput:1.1'
-```
+
+> implementation 'com.github.Sunsetzp.ImuiRecycler_master:iminput:1.1'
+
 iminpu主要实现功能有
 *  用户输入框
 *  表情容器
@@ -18,10 +18,8 @@ iminpu主要实现功能有
 *  软键盘
 *  按住说话
 
+> implementation 'com.github.Sunsetzp.ImuiRecycler_master:imlist:1.1'
 
-```
-implementation 'com.github.Sunsetzp.ImuiRecycler_master:imlist:1.1'
-```
 imlist主要功能有
 
 *  封装聊天列表的Adapter
